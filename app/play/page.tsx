@@ -82,8 +82,13 @@ export default function PlayPage() {
   };
 
   const abandonGame = () => {
-    if (confirm('Are you sure you want to abandon this game?')) {
-      setCurrentGame(null);
+    if (confirm('Are you sure you want to abandon this game? This game will not be saved.')) {
+      if (currentGame) {
+        // Remove from current game
+        setCurrentGame(null);
+        // Don't save abandoned games - they're already saved as in-progress
+        // User can delete them from history if desired
+      }
       setCurrentGameState(null);
       setShowSetup(true);
       setTeam1Name('');
@@ -236,14 +241,17 @@ export default function PlayPage() {
             
             <div className="bg-yellow-50 rounded-lg p-6 mb-6 border-l-4 border-secondary">
               <p className="text-xl text-center">
-                {getGameEndCommentary(
-                  currentGame.winner === currentGame.team1 ? currentGame.team1 : currentGame.team2,
-                  currentGame.winner === currentGame.team1 ? currentGame.team2 : currentGame.team1,
-                  {
-                    winner: currentGame.winner === currentGame.team1 ? team1Total : team2Total,
-                    loser: currentGame.winner === currentGame.team1 ? team2Total : team1Total
-                  }
-                )}
+                {currentGame.winner === 'Tie' ? 
+                  getGameEndCommentary('Tie', '', { winner: team1Total, loser: team2Total }) :
+                  getGameEndCommentary(
+                    currentGame.winner === currentGame.team1 ? currentGame.team1 : currentGame.team2,
+                    currentGame.winner === currentGame.team1 ? currentGame.team2 : currentGame.team1,
+                    {
+                      winner: currentGame.winner === currentGame.team1 ? team1Total : team2Total,
+                      loser: currentGame.winner === currentGame.team1 ? team2Total : team1Total
+                    }
+                  )
+                }
               </p>
             </div>
 

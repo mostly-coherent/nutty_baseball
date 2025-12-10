@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Game, getGames, deleteGame } from '../lib/storage';
+import { useRouter } from 'next/navigation';
+import { Game, getGames, deleteGame, setCurrentGame, getCurrentGame } from '../lib/storage';
 
 export default function HistoryPage() {
+  const router = useRouter();
   const [games, setGames] = useState<Game[]>([]);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [filter, setFilter] = useState<'all' | 'completed' | 'in-progress'>('all');
@@ -23,9 +25,19 @@ export default function HistoryPage() {
   const handleDeleteGame = (gameId: string) => {
     if (confirm('Are you sure you want to delete this game?')) {
       deleteGame(gameId);
+      // If this was the current game, clear it
+      const currentGame = getCurrentGame();
+      if (currentGame && currentGame.id === gameId) {
+        setCurrentGame(null);
+      }
       loadGames();
       setSelectedGame(null);
     }
+  };
+
+  const handleResumeGame = (game: Game) => {
+    setCurrentGame(game);
+    router.push('/play');
   };
 
   const filteredGames = games.filter(game => {
@@ -308,12 +320,12 @@ export default function HistoryPage() {
                 {/* Actions */}
                 <div className="flex gap-4">
                   {selectedGame.status === 'in-progress' && (
-                    <Link
-                      href="/play"
-                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-center transition-all"
+                    <button
+                      onClick={() => handleResumeGame(selectedGame)}
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all"
                     >
                       ▶ Resume Game
-                    </Link>
+                    </button>
                   )}
                   <button
                     onClick={() => handleDeleteGame(selectedGame.id)}

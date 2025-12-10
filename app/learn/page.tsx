@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 
@@ -157,12 +157,27 @@ export default function LearnPage() {
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
+  // Load completed lessons from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nutty-baseball-completed-lessons');
+      if (saved) {
+        setCompletedLessons(new Set(JSON.parse(saved)));
+      }
+    }
+  }, []);
+
   const filteredLessons = selectedDifficulty === 'all' 
     ? lessons 
     : lessons.filter(l => l.difficulty === selectedDifficulty);
 
   const handleCompleteLesson = (lessonId: string) => {
-    setCompletedLessons(prev => new Set([...prev, lessonId]));
+    const updated = new Set([...completedLessons, lessonId]);
+    setCompletedLessons(updated);
+    // Save to localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('nutty-baseball-completed-lessons', JSON.stringify([...updated]));
+    }
   };
 
   const getDifficultyColor = (difficulty: Difficulty) => {

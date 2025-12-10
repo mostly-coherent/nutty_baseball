@@ -94,6 +94,11 @@ export const getInningCommentary = (inning: number, totalInnings: number): strin
 export const getGameEndCommentary = (winner: string, loser: string, finalScore: { winner: number, loser: number }): string => {
   const scoreDiff = finalScore.winner - finalScore.loser;
 
+  // Handle tie game
+  if (scoreDiff === 0 || winner === 'Tie') {
+    return `It's a tie, ${finalScore.winner}-${finalScore.loser}! Just like Charlie Brown's kite - stuck in the middle! Nobody wins, nobody loses! 🤝`;
+  }
+
   if (scoreDiff >= 10) {
     return `${winner} wins big, ${finalScore.winner}-${finalScore.loser}! That was a shellacking! Even Lucy would be impressed! 🏆`;
   }
@@ -102,7 +107,7 @@ export const getGameEndCommentary = (winner: string, loser: string, finalScore: 
     return `${winner} takes it, ${finalScore.winner}-${finalScore.loser}! Great game! Snoopy's doing his victory dance! 🎉`;
   }
   
-  if (scoreDiff <= 2) {
+  if (scoreDiff <= 2 && scoreDiff > 0) {
     return `${winner} wins a nail-biter, ${finalScore.winner}-${finalScore.loser}! What a game! Charlie Brown would be proud! ⚾`;
   }
 
