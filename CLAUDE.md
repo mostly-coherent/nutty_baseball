@@ -1,0 +1,66 @@
+# Nutty_Baseball - AI Assistant Context
+
+> **Purpose:** Technical context for AI coding assistants
+> - Development commands and paths
+> - Project structure and dependencies
+> - Environment setup and troubleshooting
+> - NOT for human readers (see README.md)
+
+## Project Type
+Next.js 16 App Router with TypeScript, Tailwind CSS 4, and local storage
+
+## Key Commands
+
+### Development
+```bash
+cd /Users/jmbeh/Builder_Lab/Nutty_Baseball
+npm run dev          # Start dev server on http://localhost:3000
+npm run build        # Production build
+npm run lint         # Run ESLint
+npm run start        # Start production server
+```
+
+### Deployment
+```bash
+vercel --prod
+```
+
+## Project Structure
+- `/app` - Next.js App Router pages and layouts
+- `/app/components` - React components
+- `/app/lib` - Utility functions and data models
+- `/app/styles` - Global styles
+- `/public` - Static assets (images, icons)
+
+## Tech Stack
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript 5
+- **Styling:** Tailwind CSS 4
+- **State Management:** React hooks + Context API
+- **Data Storage:** Browser localStorage/IndexedDB (no backend for MVP)
+- **Deployment:** Vercel
+
+## Environment Variables
+No external API keys required for MVP. All data stored locally in browser.
+
+## Development Notes
+- Server runs on http://localhost:3000
+- Data persists in browser localStorage (survives page refresh)
+- No authentication/login required
+- Responsive design for mobile, tablet, and desktop
+- PWA-ready (can be installed on home screen)
+
+## Feature Modules
+- **Learn:** Interactive baseball lessons with difficulty levels
+- **Play:** Game setup wizard and score tracker
+- **Reference:** Quick rule lookups and diagrams
+- **History:** Past game records and stats
+
+## Data Models
+- **Game:** id, date, teams, innings, scores, rules, status
+- **LearningProgress:** completedLessons, currentLevel, achievements
+- **User:** preferences, favoriteTeam, displayName
+
+---
+
+**Last Updated:** 2025-12-10
