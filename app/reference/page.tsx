@@ -202,35 +202,50 @@ export default function ReferencePage() {
       <header className="bg-primary text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl hover:text-secondary transition-colors">
-              ← Back
+            <Link 
+              href="/" 
+              className="text-2xl hover:text-secondary transition-colors"
+              aria-label="Back to home page"
+            >
+              <span aria-hidden="true">←</span> Back
             </Link>
-            <h1 className="text-4xl font-bold">📖 Quick Reference</h1>
-            <div className="w-24"></div>
+            <h1 className="text-4xl font-bold">
+              <span aria-hidden="true">📖</span> Quick Reference
+            </h1>
+            <div className="w-24" aria-hidden="true"></div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main id="main-content" className="container mx-auto px-4 py-8" tabIndex={-1}>
         {/* Search Bar */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="🔍 Search for rules, positions, or situations..."
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none text-lg"
-          />
-        </div>
+        <section aria-label="Search" className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <label htmlFor="reference-search" className="sr-only">
+            Search for rules, positions, or situations
+          </label>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl" aria-hidden="true">🔍</span>
+            <input
+              id="reference-search"
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for rules, positions, or situations..."
+              className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none text-lg"
+              aria-describedby="search-results-status"
+            />
+          </div>
+        </section>
 
         {/* Category Filter */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-bold mb-4">Filter by Category:</h2>
-          <div className="flex flex-wrap gap-3">
+        <section aria-labelledby="category-heading" className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <h2 id="category-heading" className="text-xl font-bold mb-4">Filter by Category:</h2>
+          <div className="flex flex-wrap gap-3" role="group" aria-label="Category filter buttons">
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
+                aria-pressed={selectedCategory === cat}
                 className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                   selectedCategory === cat
                     ? 'bg-primary text-white shadow-lg scale-105'
@@ -241,61 +256,81 @@ export default function ReferencePage() {
               </button>
             ))}
           </div>
+        </section>
+
+        {/* Results status for screen readers */}
+        <div id="search-results-status" className="sr-only" role="status" aria-live="polite">
+          {filteredReferences.length === 0 
+            ? 'No results found' 
+            : `${filteredReferences.length} ${filteredReferences.length === 1 ? 'result' : 'results'} found`
+          }
         </div>
 
         {/* Reference Items */}
-        <div className="space-y-4">
-          {filteredReferences.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-              <p className="text-xl text-gray-600">
-                No results found. Try a different search term or category!
-              </p>
-            </div>
-          ) : (
-            filteredReferences.map(ref => (
-              <div
-                key={ref.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden transition-all hover:shadow-xl"
-              >
-                <button
-                  onClick={() => setExpandedId(expandedId === ref.id ? null : ref.id)}
-                  className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+        <section aria-label="Reference items">
+          <h2 className="sr-only">Reference Questions</h2>
+          <div className="space-y-4">
+            {filteredReferences.length === 0 ? (
+              <div className="bg-white rounded-lg shadow-lg p-8 text-center" role="alert">
+                <p className="text-xl text-gray-700">
+                  No results found. Try a different search term or category!
+                </p>
+              </div>
+            ) : (
+              filteredReferences.map(ref => (
+                <article
+                  key={ref.id}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden transition-all hover:shadow-xl"
                 >
-                  <div className="flex items-center gap-4 flex-1">
-                    <span className="text-4xl">{ref.emoji}</span>
-                    <div>
-                      <div className="text-sm text-gray-500 font-semibold mb-1">
-                        {ref.category}
+                  <h3>
+                    <button
+                      onClick={() => setExpandedId(expandedId === ref.id ? null : ref.id)}
+                      className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                      aria-expanded={expandedId === ref.id}
+                      aria-controls={`answer-${ref.id}`}
+                    >
+                      <div className="flex items-center gap-4 flex-1">
+                        <span className="text-4xl" aria-hidden="true">{ref.emoji}</span>
+                        <div>
+                          <div className="text-sm text-gray-600 font-semibold mb-1">
+                            {ref.category}
+                          </div>
+                          <div className="text-xl font-bold text-gray-900">
+                            {ref.question}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xl font-bold text-gray-900">
-                        {ref.question}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-2xl text-gray-400">
-                    {expandedId === ref.id ? '▼' : '▶'}
-                  </span>
-                </button>
-                
-                {expandedId === ref.id && (
-                  <div className="px-6 pb-6 pt-2 bg-gray-50 border-t border-gray-200">
+                      <span className="text-2xl text-gray-500" aria-hidden="true">
+                        {expandedId === ref.id ? '▼' : '▶'}
+                      </span>
+                    </button>
+                  </h3>
+                  
+                  <div 
+                    id={`answer-${ref.id}`}
+                    className={`px-6 pb-6 pt-2 bg-gray-50 border-t border-gray-200 ${expandedId === ref.id ? '' : 'hidden'}`}
+                    role="region"
+                    aria-labelledby={`question-${ref.id}`}
+                  >
                     <p className="text-lg text-gray-700 leading-relaxed">
                       {ref.answer}
                     </p>
                   </div>
-                )}
-              </div>
-            ))
-          )}
-        </div>
+                </article>
+              ))
+            )}
+          </div>
+        </section>
 
         {/* Peanuts Quote */}
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6 text-center">
-          <p className="text-xl italic text-gray-700">
+        <figure className="mt-8 bg-white rounded-lg shadow-lg p-6 text-center">
+          <blockquote className="text-xl italic text-gray-700">
             "I think I've discovered the secret of life - you just hang around until you get used to it."
-          </p>
-          <p className="text-sm text-gray-500 mt-2">- Snoopy (Same goes for baseball rules! 🐕)</p>
-        </div>
+          </blockquote>
+          <figcaption className="text-sm text-gray-600 mt-2">
+            — Snoopy (Same goes for baseball rules! <span aria-hidden="true">🐕</span>)
+          </figcaption>
+        </figure>
       </main>
     </div>
   );

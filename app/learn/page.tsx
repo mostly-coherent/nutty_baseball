@@ -194,24 +194,31 @@ export default function LearnPage() {
       <header className="bg-primary text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl hover:text-secondary transition-colors">
-              ← Back
+            <Link 
+              href="/" 
+              className="text-2xl hover:text-secondary transition-colors"
+              aria-label="Back to home page"
+            >
+              <span aria-hidden="true">←</span> Back
             </Link>
-            <h1 className="text-4xl font-bold">📚 Learn Baseball</h1>
-            <div className="w-24"></div>
+            <h1 className="text-4xl font-bold">
+              <span aria-hidden="true">📚</span> Learn Baseball
+            </h1>
+            <div className="w-24" aria-hidden="true"></div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main id="main-content" className="container mx-auto px-4 py-8" tabIndex={-1}>
         {!selectedLesson ? (
           <>
             {/* Difficulty Filter */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <h2 className="text-xl font-bold mb-4">Choose Your Level:</h2>
-              <div className="flex flex-wrap gap-3">
+            <section aria-labelledby="difficulty-heading" className="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <h2 id="difficulty-heading" className="text-xl font-bold mb-4">Choose Your Level:</h2>
+              <div className="flex flex-wrap gap-3" role="group" aria-label="Filter by difficulty level">
                 <button
                   onClick={() => setSelectedDifficulty('all')}
+                  aria-pressed={selectedDifficulty === 'all'}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                     selectedDifficulty === 'all' 
                       ? 'bg-blue-500 text-white shadow-lg scale-105' 
@@ -222,95 +229,110 @@ export default function LearnPage() {
                 </button>
                 <button
                   onClick={() => setSelectedDifficulty('beginner')}
+                  aria-pressed={selectedDifficulty === 'beginner'}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                     selectedDifficulty === 'beginner' 
                       ? 'bg-green-500 text-white shadow-lg scale-105' 
                       : 'bg-green-100 text-green-800 hover:bg-green-200'
                   }`}
                 >
-                  🌱 Beginner
+                  <span aria-hidden="true">🌱</span> Beginner
                 </button>
                 <button
                   onClick={() => setSelectedDifficulty('intermediate')}
+                  aria-pressed={selectedDifficulty === 'intermediate'}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                     selectedDifficulty === 'intermediate' 
                       ? 'bg-yellow-500 text-white shadow-lg scale-105' 
                       : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
                   }`}
                 >
-                  ⭐ Intermediate
+                  <span aria-hidden="true">⭐</span> Intermediate
                 </button>
                 <button
                   onClick={() => setSelectedDifficulty('advanced')}
+                  aria-pressed={selectedDifficulty === 'advanced'}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                     selectedDifficulty === 'advanced' 
                       ? 'bg-red-500 text-white shadow-lg scale-105' 
                       : 'bg-red-100 text-red-800 hover:bg-red-200'
                   }`}
                 >
-                  🔥 Advanced
+                  <span aria-hidden="true">🔥</span> Advanced
                 </button>
               </div>
-            </div>
+            </section>
 
             {/* Progress */}
-            <div className="bg-yellow-50 rounded-lg shadow-lg p-4 mb-6 border-l-4 border-secondary">
+            <div 
+              className="bg-yellow-50 rounded-lg shadow-lg p-4 mb-6 border-l-4 border-secondary"
+              role="status"
+              aria-live="polite"
+            >
               <p className="text-lg">
                 <strong>Progress:</strong> {completedLessons.size} of {lessons.length} lessons completed
-                {completedLessons.size === lessons.length && " 🎉 You're a baseball expert!"}
+                {completedLessons.size === lessons.length && (
+                  <span> <span aria-hidden="true">🎉</span> You're a baseball expert!</span>
+                )}
               </p>
             </div>
 
             {/* Lessons Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredLessons.map(lesson => (
-                <button
-                  key={lesson.id}
-                  onClick={() => setSelectedLesson(lesson)}
-                  className="bg-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-all transform hover:scale-105 text-left"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="text-5xl">{lesson.emoji}</span>
-                    {completedLessons.has(lesson.id) && (
-                      <span className="text-2xl">✅</span>
-                    )}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{lesson.title}</h3>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3 border ${getDifficultyColor(lesson.difficulty)}`}>
-                    {lesson.difficulty}
-                  </span>
-                  <p className="text-gray-600">{lesson.description}</p>
-                </button>
-              ))}
-            </div>
+            <section aria-label="Available lessons">
+              <h2 className="sr-only">Lessons</h2>
+              <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
+                {filteredLessons.map(lesson => (
+                  <li key={lesson.id}>
+                    <button
+                      onClick={() => setSelectedLesson(lesson)}
+                      className="w-full bg-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-all transform hover:scale-105 text-left"
+                      aria-label={`${lesson.title} - ${lesson.difficulty} level${completedLessons.has(lesson.id) ? ', completed' : ''}`}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <span className="text-5xl" aria-hidden="true">{lesson.emoji}</span>
+                        {completedLessons.has(lesson.id) && (
+                          <span className="text-2xl" aria-hidden="true">✅</span>
+                        )}
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{lesson.title}</h3>
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3 border ${getDifficultyColor(lesson.difficulty)}`}>
+                        {lesson.difficulty}
+                      </span>
+                      <p className="text-gray-700">{lesson.description}</p>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
             {/* Peanuts Quote */}
-            <div className="mt-8 bg-white rounded-lg shadow-lg p-6 text-center">
-              <p className="text-xl italic text-gray-700">
+            <figure className="mt-8 bg-white rounded-lg shadow-lg p-6 text-center">
+              <blockquote className="text-xl italic text-gray-700">
                 "Learn from yesterday, live for today, look to tomorrow, rest this afternoon."
-              </p>
-              <p className="text-sm text-gray-500 mt-2">- Charlie Brown</p>
-            </div>
+              </blockquote>
+              <figcaption className="text-sm text-gray-600 mt-2">— Charlie Brown</figcaption>
+            </figure>
           </>
         ) : (
           /* Lesson Detail View */
-          <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
+          <article className="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
             <button
               onClick={() => setSelectedLesson(null)}
-              className="text-blue-600 hover:text-blue-800 font-semibold mb-4 flex items-center gap-2"
+              className="text-blue-700 hover:text-blue-900 font-semibold mb-4 flex items-center gap-2"
+              aria-label="Back to all lessons"
             >
-              ← Back to Lessons
+              <span aria-hidden="true">←</span> Back to Lessons
             </button>
 
-            <div className="flex items-center gap-4 mb-6">
-              <span className="text-6xl">{selectedLesson.emoji}</span>
+            <header className="flex items-center gap-4 mb-6">
+              <span className="text-6xl" aria-hidden="true">{selectedLesson.emoji}</span>
               <div>
                 <h2 className="text-3xl font-bold">{selectedLesson.title}</h2>
                 <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mt-2 border ${getDifficultyColor(selectedLesson.difficulty)}`}>
                   {selectedLesson.difficulty}
                 </span>
               </div>
-            </div>
+            </header>
 
             <div className="prose prose-lg max-w-none">
               {selectedLesson.content.map((paragraph, index) => {
@@ -332,11 +354,16 @@ export default function LearnPage() {
                   setSelectedLesson(null);
                 }}
                 className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg text-xl transition-all transform hover:scale-105 shadow-lg"
+                aria-label={completedLessons.has(selectedLesson.id) ? 'Lesson already completed, return to lessons' : 'Mark lesson as complete and return to lessons'}
               >
-                {completedLessons.has(selectedLesson.id) ? '✅ Completed!' : '✓ Mark as Complete'}
+                {completedLessons.has(selectedLesson.id) ? (
+                  <><span aria-hidden="true">✅</span> Completed!</>
+                ) : (
+                  <><span aria-hidden="true">✓</span> Mark as Complete</>
+                )}
               </button>
             </div>
-          </div>
+          </article>
         )}
       </main>
     </div>

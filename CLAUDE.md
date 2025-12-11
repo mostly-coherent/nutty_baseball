@@ -49,9 +49,11 @@ vercel --prod
 - `/public` - Static assets (images, icons)
 
 ## Tech Stack
-- **Framework:** Next.js 16 (App Router)
-- **Language:** TypeScript 5
-- **Styling:** Tailwind CSS 4
+*Follows root CLAUDE.md Core Web defaults:*
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
 - **State Management:** React hooks + Context API
 - **Data Storage:** Browser localStorage/IndexedDB (no backend for MVP)
 - **Deployment:** Vercel

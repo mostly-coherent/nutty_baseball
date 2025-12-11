@@ -112,57 +112,77 @@ export default function PlayPage() {
       <header className="bg-primary text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl hover:text-secondary transition-colors">
-              ← Back
+            <Link 
+              href="/" 
+              className="text-2xl hover:text-secondary transition-colors"
+              aria-label="Back to home page"
+            >
+              <span aria-hidden="true">←</span> Back
             </Link>
-            <h1 className="text-4xl font-bold">⚾ Play Ball!</h1>
-            <div className="w-24"></div>
+            <h1 className="text-4xl font-bold">
+              <span aria-hidden="true">⚾</span> Play Ball!
+            </h1>
+            <div className="w-24" aria-hidden="true"></div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main id="main-content" className="container mx-auto px-4 py-8" tabIndex={-1}>
         {showSetup ? (
           /* Game Setup */
-          <div className="bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-6">⚙️ Set Up Your Game</h2>
+          <section aria-labelledby="setup-heading" className="bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto">
+            <h2 id="setup-heading" className="text-3xl font-bold text-center mb-6">
+              <span aria-hidden="true">⚙️</span> Set Up Your Game
+            </h2>
             
-            <div className="bg-yellow-50 rounded-lg p-4 mb-6 border-l-4 border-secondary">
+            <div className="bg-yellow-50 rounded-lg p-4 mb-6 border-l-4 border-secondary" role="note">
               <p className="text-lg italic">{getStartGameQuote()}</p>
             </div>
 
-            <div className="space-y-6">
+            <form onSubmit={(e) => { e.preventDefault(); startNewGame(); }} className="space-y-6">
               {/* Team Names */}
               <div>
-                <label className="block text-lg font-semibold mb-2">Team 1 Name:</label>
+                <label htmlFor="team1-name" className="block text-lg font-semibold mb-2">
+                  Team 1 Name:
+                </label>
                 <input
+                  id="team1-name"
                   type="text"
                   value={team1Name}
                   onChange={(e) => setTeam1Name(e.target.value)}
                   placeholder="e.g., Dad's Team, Tigers, Home Team"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none text-lg"
+                  aria-required="true"
+                  autoComplete="off"
                 />
               </div>
 
               <div>
-                <label className="block text-lg font-semibold mb-2">Team 2 Name:</label>
+                <label htmlFor="team2-name" className="block text-lg font-semibold mb-2">
+                  Team 2 Name:
+                </label>
                 <input
+                  id="team2-name"
                   type="text"
                   value={team2Name}
                   onChange={(e) => setTeam2Name(e.target.value)}
                   placeholder="e.g., Son's Team, Cubs, Away Team"
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none text-lg"
+                  aria-required="true"
+                  autoComplete="off"
                 />
               </div>
 
               {/* Number of Innings */}
-              <div>
-                <label className="block text-lg font-semibold mb-2">Number of Innings:</label>
-                <div className="flex gap-3">
+              <fieldset>
+                <legend className="block text-lg font-semibold mb-2">Number of Innings:</legend>
+                <div className="flex gap-3" role="radiogroup" aria-label="Select number of innings">
                   {[3, 6, 9].map(num => (
                     <button
                       key={num}
+                      type="button"
                       onClick={() => setInnings(num)}
+                      aria-pressed={innings === num}
                       className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
                         innings === num
                           ? 'bg-primary text-white shadow-lg scale-105'
@@ -173,73 +193,81 @@ export default function PlayPage() {
                     </button>
                   ))}
                 </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  💡 Backyard: 3, Little League: 6, MLB: 9
+                <p className="text-sm text-gray-700 mt-2" id="innings-hint">
+                  <span aria-hidden="true">💡</span> Backyard: 3, Little League: 6, MLB: 9
                 </p>
-              </div>
+              </fieldset>
 
               {/* Rule Set */}
-              <div>
-                <label className="block text-lg font-semibold mb-2">Rule Set:</label>
-                <div className="space-y-3">
+              <fieldset>
+                <legend className="block text-lg font-semibold mb-2">Rule Set:</legend>
+                <div className="space-y-3" role="radiogroup" aria-label="Select rule set">
                   <button
+                    type="button"
                     onClick={() => setRuleSet('simplified')}
+                    aria-pressed={ruleSet === 'simplified'}
                     className={`w-full p-4 rounded-lg text-left transition-all ${
                       ruleSet === 'simplified'
                         ? 'bg-green-500 text-white shadow-lg'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
                   >
-                    <div className="font-bold text-lg">🌱 Simplified (Backyard)</div>
+                    <div className="font-bold text-lg"><span aria-hidden="true">🌱</span> Simplified (Backyard)</div>
                     <div className="text-sm mt-1 opacity-90">
                       Relaxed rules, perfect for casual family games
                     </div>
                   </button>
 
                   <button
+                    type="button"
                     onClick={() => setRuleSet('little-league')}
+                    aria-pressed={ruleSet === 'little-league'}
                     className={`w-full p-4 rounded-lg text-left transition-all ${
                       ruleSet === 'little-league'
                         ? 'bg-blue-500 text-white shadow-lg'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
                   >
-                    <div className="font-bold text-lg">🏆 Little League</div>
+                    <div className="font-bold text-lg"><span aria-hidden="true">🏆</span> Little League</div>
                     <div className="text-sm mt-1 opacity-90">
                       Official youth baseball rules
                     </div>
                   </button>
 
                   <button
+                    type="button"
                     onClick={() => setRuleSet('mlb')}
+                    aria-pressed={ruleSet === 'mlb'}
                     className={`w-full p-4 rounded-lg text-left transition-all ${
                       ruleSet === 'mlb'
                         ? 'bg-red-500 text-white shadow-lg'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
                   >
-                    <div className="font-bold text-lg">⚡ MLB Rules</div>
+                    <div className="font-bold text-lg"><span aria-hidden="true">⚡</span> MLB Rules</div>
                     <div className="text-sm mt-1 opacity-90">
                       Professional baseball rules
                     </div>
                   </button>
                 </div>
-              </div>
+              </fieldset>
 
               <button
-                onClick={startNewGame}
+                type="submit"
                 className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg text-xl transition-all transform hover:scale-105 shadow-lg"
               >
-                🎮 Start Game!
+                <span aria-hidden="true">🎮</span> Start Game!
               </button>
-            </div>
-          </div>
+            </form>
+          </section>
         ) : currentGame?.status === 'completed' ? (
           /* Game Completed */
-          <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-6">🎉 Game Over!</h2>
+          <section aria-labelledby="gameover-heading" className="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
+            <h2 id="gameover-heading" className="text-4xl font-bold text-center mb-6">
+              <span aria-hidden="true">🎉</span> Game Over!
+            </h2>
             
-            <div className="bg-yellow-50 rounded-lg p-6 mb-6 border-l-4 border-secondary">
+            <div className="bg-yellow-50 rounded-lg p-6 mb-6 border-l-4 border-secondary" role="status" aria-live="polite">
               <p className="text-xl text-center">
                 {currentGame.winner === 'Tie' ? 
                   getGameEndCommentary('Tie', '', { winner: team1Total, loser: team2Total }) :
@@ -255,12 +283,14 @@ export default function PlayPage() {
               </p>
             </div>
 
-            <div className="text-center mb-8">
+            <div className="text-center mb-8" aria-label="Final score">
               <div className="text-6xl font-bold mb-4">
-                {currentGame.team1}: {team1Total} - {currentGame.team2}: {team2Total}
+                <span aria-label={`${currentGame.team1}: ${team1Total}`}>{currentGame.team1}: {team1Total}</span>
+                {' - '}
+                <span aria-label={`${currentGame.team2}: ${team2Total}`}>{currentGame.team2}: {team2Total}</span>
               </div>
               <div className="text-2xl text-primary font-bold">
-                Winner: {currentGame.winner}! 🏆
+                Winner: {currentGame.winner}! <span aria-hidden="true">🏆</span>
               </div>
             </div>
 
@@ -269,21 +299,26 @@ export default function PlayPage() {
                 href="/history"
                 className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg text-xl text-center transition-all"
               >
-                📊 View Game History
+                <span aria-hidden="true">📊</span> View Game History
               </Link>
               <button
                 onClick={startAnotherGame}
                 className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg text-xl transition-all"
               >
-                🎮 Play Another Game
+                <span aria-hidden="true">🎮</span> Play Another Game
               </button>
             </div>
-          </div>
+          </section>
         ) : currentGame ? (
           /* Active Game - Score Tracking */
           <div className="space-y-6">
             {/* Commentary */}
-            <div className="bg-yellow-50 rounded-lg shadow-lg p-6 border-l-4 border-secondary">
+            <div 
+              className="bg-yellow-50 rounded-lg shadow-lg p-6 border-l-4 border-secondary"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
               <p className="text-xl text-center font-semibold">
                 {getCommentary({
                   team1Score: team1Total,
@@ -296,86 +331,112 @@ export default function PlayPage() {
             </div>
 
             {/* Current Score */}
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <div className="grid grid-cols-2 gap-6 text-center">
+            <section aria-labelledby="current-score-heading" className="bg-white rounded-lg shadow-xl p-6">
+              <h2 id="current-score-heading" className="sr-only">Current Score</h2>
+              <div className="grid grid-cols-2 gap-6 text-center" role="region" aria-live="polite">
                 <div>
                   <h3 className="text-2xl font-bold mb-2">{currentGame.team1}</h3>
-                  <div className="text-6xl font-bold text-blue-600">{team1Total}</div>
+                  <div className="text-6xl font-bold text-blue-700" aria-label={`${currentGame.team1} score: ${team1Total}`}>
+                    {team1Total}
+                  </div>
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">{currentGame.team2}</h3>
-                  <div className="text-6xl font-bold text-red-600">{team2Total}</div>
+                  <div className="text-6xl font-bold text-red-700" aria-label={`${currentGame.team2} score: ${team2Total}`}>
+                    {team2Total}
+                  </div>
                 </div>
               </div>
-            </div>
+            </section>
 
             {/* Scoreboard */}
-            <div className="bg-white rounded-lg shadow-xl p-6 overflow-x-auto">
-              <h3 className="text-2xl font-bold mb-4 text-center">📊 Scoreboard</h3>
-              <table className="w-full">
+            <section aria-labelledby="scoreboard-heading" className="bg-white rounded-lg shadow-xl p-6 overflow-x-auto">
+              <h3 id="scoreboard-heading" className="text-2xl font-bold mb-4 text-center">
+                <span aria-hidden="true">📊</span> Scoreboard
+              </h3>
+              <table className="w-full" aria-describedby="scoreboard-heading">
+                <caption className="sr-only">Inning-by-inning score for {currentGame.team1} vs {currentGame.team2}</caption>
                 <thead>
                   <tr className="border-b-2 border-gray-300">
-                    <th className="p-3 text-left">Team</th>
+                    <th scope="col" className="p-3 text-left">Team</th>
                     {Array.from({ length: currentGame.innings }, (_, i) => (
-                      <th key={i} className="p-3 text-center">{i + 1}</th>
+                      <th key={i} scope="col" className="p-3 text-center">
+                        <span aria-label={`Inning ${i + 1}`}>{i + 1}</span>
+                      </th>
                     ))}
-                    <th className="p-3 text-center font-bold">Total</th>
+                    <th scope="col" className="p-3 text-center font-bold">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b border-gray-200">
-                    <td className="p-3 font-bold">{currentGame.team1}</td>
+                    <th scope="row" className="p-3 font-bold text-left">{currentGame.team1}</th>
                     {currentGame.scores.team1.map((score, i) => (
                       <td key={i} className="p-3 text-center">
+                        <label className="sr-only" htmlFor={`team1-inning-${i + 1}`}>
+                          {currentGame.team1} score for inning {i + 1}
+                        </label>
                         <input
+                          id={`team1-inning-${i + 1}`}
                           type="number"
                           min="0"
                           value={score}
                           onChange={(e) => updateScore('team1', i + 1, parseInt(e.target.value) || 0)}
                           className="w-12 text-center border-2 border-gray-300 rounded py-1 focus:border-blue-500 focus:outline-none"
+                          aria-label={`${currentGame.team1} inning ${i + 1} score`}
                         />
                       </td>
                     ))}
-                    <td className="p-3 text-center font-bold text-xl text-blue-600">{team1Total}</td>
+                    <td className="p-3 text-center font-bold text-xl text-blue-700" aria-label={`${currentGame.team1} total: ${team1Total}`}>
+                      {team1Total}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-bold">{currentGame.team2}</td>
+                    <th scope="row" className="p-3 font-bold text-left">{currentGame.team2}</th>
                     {currentGame.scores.team2.map((score, i) => (
                       <td key={i} className="p-3 text-center">
+                        <label className="sr-only" htmlFor={`team2-inning-${i + 1}`}>
+                          {currentGame.team2} score for inning {i + 1}
+                        </label>
                         <input
+                          id={`team2-inning-${i + 1}`}
                           type="number"
                           min="0"
                           value={score}
                           onChange={(e) => updateScore('team2', i + 1, parseInt(e.target.value) || 0)}
                           className="w-12 text-center border-2 border-gray-300 rounded py-1 focus:border-red-500 focus:outline-none"
+                          aria-label={`${currentGame.team2} inning ${i + 1} score`}
                         />
                       </td>
                     ))}
-                    <td className="p-3 text-center font-bold text-xl text-red-600">{team2Total}</td>
+                    <td className="p-3 text-center font-bold text-xl text-red-700" aria-label={`${currentGame.team2} total: ${team2Total}`}>
+                      {team2Total}
+                    </td>
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </section>
 
             {/* Game Controls */}
-            <div className="flex gap-4">
+            <div className="flex gap-4" role="group" aria-label="Game controls">
               <button
                 onClick={endGame}
                 className="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg text-xl transition-all shadow-lg"
               >
-                🏁 End Game
+                <span aria-hidden="true">🏁</span> End Game
               </button>
               <button
                 onClick={abandonGame}
                 className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-lg text-xl transition-all shadow-lg"
               >
-                ❌ Abandon Game
+                <span aria-hidden="true">❌</span> Abandon Game
               </button>
             </div>
 
             {/* Rule Reference */}
-            <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
-              <h4 className="font-bold mb-2">📖 Quick Rule Reminder ({currentGame.ruleSet}):</h4>
+            <aside className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500" aria-label="Rule reference">
+              <h4 className="font-bold mb-2">
+                <span aria-hidden="true">📖</span> Quick Rule Reminder ({currentGame.ruleSet}):
+              </h4>
               {currentGame.ruleSet === 'simplified' && (
                 <p>Relaxed backyard rules - have fun and don't worry about the details!</p>
               )}
@@ -385,7 +446,7 @@ export default function PlayPage() {
               {currentGame.ruleSet === 'mlb' && (
                 <p>9 innings, 3 outs per inning, extra innings if tied</p>
               )}
-            </div>
+            </aside>
           </div>
         ) : null}
       </main>

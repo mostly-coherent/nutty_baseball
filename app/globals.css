@@ -3,21 +3,29 @@
 :root {
   --background: #fef9f3;
   --foreground: #2d1810;
-  --primary: #e85d04;
-  --secondary: #faa307;
-  --accent: #dc2f02;
-  --grass: #4a7c59;
-  --dirt: #a67c52;
+  --primary: #c74b00;
+  --primary-dark: #a33d00;
+  --secondary: #b87800;
+  --accent: #b82700;
+  --grass: #3d6849;
+  --dirt: #8a6543;
+  --focus-ring: #1d4ed8;
+  --text-muted: #4a4a4a;
+  --text-subtle: #5c5c5c;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-grass: var(--grass);
   --color-dirt: var(--dirt);
+  --color-focus-ring: var(--focus-ring);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -26,6 +34,12 @@
   :root {
     --background: #1a1410;
     --foreground: #f5e6d3;
+    --primary: #ff8533;
+    --primary-dark: #ff6600;
+    --secondary: #ffb84d;
+    --focus-ring: #60a5fa;
+    --text-muted: #c4b5a5;
+    --text-subtle: #a89888;
   }
 }
 
@@ -33,6 +47,63 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Skip to content link - visible only on focus */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-weight: 600;
+  z-index: 100;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Global focus styles for better accessibility */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Remove default outline, use custom focus-visible */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Interactive elements focus states */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --primary: #8b3800;
+    --primary-dark: #6b2b00;
+    --secondary: #8b5e00;
+    --foreground: #000000;
+    --background: #ffffff;
+    --text-muted: #333333;
+    --text-subtle: #444444;
+  }
 }
 
 /* Baseball-themed animations */
@@ -43,4 +114,32 @@ body {
 
 .animate-bounce-ball {
   animation: bounce-ball 1s ease-in-out infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-ball {
+    animation: none;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
