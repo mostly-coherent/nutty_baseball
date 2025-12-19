@@ -8,12 +8,12 @@
 
 ## 🚨 CRITICAL: GitHub Safety
 
-**This project ONLY syncs to personal GitHub:**
-- ✅ `github.com/jmbeh/nutty_baseball`
-- ❌ **NEVER push to:** `git.corp.adobe.com/*` or `github.com/adobe/*`
+**This project syncs to personal GitHub only.**
 
-Git remote format: `git@github.com:jmbeh/nutty_baseball.git`
-Git author email: `behjianming@gmail.com`
+Git remote: Check with `git remote -v`
+Git author: Check with `git config user.email`
+
+**Vercel:** DO NOT push/deploy unless explicitly requested (git push = auto-deploy)
 
 ## Project Type
 Next.js 16 App Router with TypeScript, Tailwind CSS 4, and local storage
@@ -24,7 +24,6 @@ Next.js 16 App Router with TypeScript, Tailwind CSS 4, and local storage
 
 ### Development
 ```bash
-cd /Users/jmbeh/Personal Builder Lab/Nutty_Baseball
 npm run dev          # Start dev server on http://localhost:3000
 npm run build        # Production build
 npm run lint         # Run ESLint
