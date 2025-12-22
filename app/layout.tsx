@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : "https://nutty-baseball.vercel.app"
+      : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
   title: {
     default: "Nutty Baseball - Learn & Play Baseball",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://nutty-baseball.vercel.app",
+    url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     siteName: "Nutty Baseball",
     title: "Nutty Baseball - Learn & Play Baseball",
     description: "Interactive baseball learning and game tracking app for parents and kids. Learn rules, track scores, and have fun!",
