@@ -58,11 +58,14 @@ export default function ThemeSwitcher() {
 
   return (
     <>
-      {/* Invisible trigger area in footer */}
+      {/* Invisible trigger area in bottom-left corner */}
       <div 
         onClick={handleSecretClick}
-        className="w-8 h-8 opacity-0 cursor-default"
+        className="fixed bottom-0 left-0 w-8 h-8 opacity-0 z-50 cursor-default"
         aria-hidden="true"
+        role="button"
+        aria-label="Secret Theme Switcher"
+        tabIndex={-1}
       />
 
       {showPassword && (

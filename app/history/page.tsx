@@ -8,7 +8,6 @@ import { Game, getGames, clearGames } from '../lib/storage';
 export default function HistoryPage() {
   const { theme } = useTheme();
   const [games, setGames] = useState<Game[]>([]);
-  const [filter, setFilter] = useState<'all' | 'wins' | 'losses'>('all');
 
   useEffect(() => {
     setGames(getGames().reverse()); // Show newest first
@@ -145,7 +144,7 @@ export default function HistoryPage() {
         {games.length > 0 && (
           <figure className={`mt-16 text-center max-w-2xl mx-auto ${theme.colors.cardBg} p-8 rounded-lg border-2 ${theme.colors.cardBorder} transform rotate-1 shadow-lg`}>
             <blockquote className={`text-2xl italic mb-4 opacity-90 ${theme.styles.fontHeader}`}>
-              "{theme.content.footerQuote.text}"
+              &quot;{theme.content.footerQuote.text}&quot;
             </blockquote>
             <figcaption className="text-lg font-bold opacity-70">
               — {theme.content.footerQuote.author}

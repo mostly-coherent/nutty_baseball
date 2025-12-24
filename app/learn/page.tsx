@@ -277,7 +277,7 @@ export default function LearnPage() {
               <p className="text-xl font-medium">
                 <strong>Progress:</strong> {completedLessons.size} of {lessons.length} lessons completed
                 {completedLessons.size === lessons.length && (
-                  <span className="ml-2 block mt-2 text-emerald-700"> <span aria-hidden="true">🎉</span> You're a baseball expert!</span>
+                  <span className="ml-2 block mt-2 text-emerald-700"> <span aria-hidden="true">🎉</span> You&apos;re a baseball expert!</span>
                 )}
               </p>
             </div>
@@ -313,7 +313,7 @@ export default function LearnPage() {
             {/* Theme Quote */}
             <figure className={`mt-12 ${theme.colors.cardBg} rounded-lg p-8 text-center border-2 ${theme.colors.cardBorder} max-w-2xl mx-auto transform rotate-1`}>
               <blockquote className={`text-2xl italic mb-4 opacity-90 ${theme.styles.fontHeader}`}>
-                "{theme.content.footerQuote.text}"
+                &quot;{theme.content.footerQuote.text}&quot;
               </blockquote>
               <figcaption className="text-lg font-bold opacity-70">
                 — {theme.content.footerQuote.author}

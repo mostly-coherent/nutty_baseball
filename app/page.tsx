@@ -38,8 +38,8 @@ export default function Home() {
             {greeting}
           </h2>
           <p className="text-xl leading-relaxed opacity-90">
-            Whether you're a rookie or a veteran, <br/>
-            there's always room on the roster.
+            Whether you&apos;re a rookie or a veteran, <br/>
+            there&apos;s always room on the roster.
           </p>
         </section>
 
@@ -103,7 +103,7 @@ export default function Home() {
             <span aria-hidden="true">💡</span> {theme.content.funFact.title}
           </h3>
           <p className="text-xl leading-relaxed opacity-90 italic">
-            "{theme.content.funFact.text}"
+            &quot;{theme.content.funFact.text}&quot;
           </p>
         </section>
 
@@ -136,7 +136,7 @@ export default function Home() {
       <footer className={`${theme.colors.primary} text-white py-12 mt-12 transition-colors duration-500`}>
         <div className="container mx-auto px-4 text-center max-w-2xl">
           <blockquote className={`text-2xl italic mb-6 ${theme.styles.fontHeader} opacity-90`}>
-            "{theme.content.footerQuote.text}"
+            &quot;{theme.content.footerQuote.text}&quot;
           </blockquote>
           <cite className="block text-lg opacity-80 not-italic mb-8">
             — {theme.content.footerQuote.author}

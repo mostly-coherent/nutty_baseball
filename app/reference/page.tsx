@@ -133,7 +133,7 @@ export default function ReferencePage() {
               ))
             ) : (
               <div className="col-span-2 text-center py-12 opacity-70 text-xl italic">
-                No terms found matching "{searchTerm}"
+                No terms found matching &quot;{searchTerm}&quot;
               </div>
             )}
           </div>
@@ -142,7 +142,7 @@ export default function ReferencePage() {
         {/* Footer Quote */}
         <figure className={`mt-16 text-center max-w-2xl mx-auto ${theme.colors.cardBg} p-8 rounded-lg border-2 ${theme.colors.cardBorder} transform -rotate-1 shadow-lg`}>
           <blockquote className={`text-2xl italic mb-4 opacity-90 ${theme.styles.fontHeader}`}>
-            "{theme.content.footerQuote.text}"
+            &quot;{theme.content.footerQuote.text}&quot;
           </blockquote>
           <figcaption className="text-lg font-bold opacity-70 flex items-center justify-center gap-2">
             — {theme.content.footerQuote.author} <span aria-hidden="true">{theme.content.mascotEmoji}</span>

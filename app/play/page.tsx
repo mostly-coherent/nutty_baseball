@@ -135,7 +135,7 @@ export default function PlayPage() {
             </h2>
             
             <div className={`bg-white/50 rounded-lg p-6 mb-8 border-l-8 ${theme.colors.secondary}`}>
-              <p className="text-xl italic text-center opacity-90">"{getStartGameQuote(theme)}"</p>
+              <p className="text-xl italic text-center opacity-90">&quot;{getStartGameQuote(theme)}&quot;</p>
             </div>
 
             <form onSubmit={(e) => { e.preventDefault(); startNewGame(); }} className="space-y-8">
@@ -208,7 +208,7 @@ export default function PlayPage() {
                     <button
                       key={rule.id}
                       type="button"
-                      onClick={() => setRuleSet(rule.id as any)}
+                      onClick={() => setRuleSet(rule.id as 'simplified' | 'little-league' | 'mlb')}
                       aria-pressed={ruleSet === rule.id}
                       className={`w-full p-4 rounded-lg text-left transition-all flex items-center gap-4 ${
                         ruleSet === rule.id
